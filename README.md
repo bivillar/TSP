@@ -14,7 +14,7 @@ You'll need to have yarn installed. If you don't have it, before continuing plea
 
 ### Installing
 
-The instalation is pretty simple. Download the Project and run the start script at it's root like this:
+The instalation is pretty simple. Download the Project, open a terminal window at the root of it and execute the start script like this:
 
 ```
 ./start.sh
