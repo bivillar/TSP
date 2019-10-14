@@ -1,0 +1,36 @@
+.App {
+  text-align: center;
+  background-color: #515868;
+  box-shadow: 0px 0px 10px #14161a;
+  min-height: 100vh !important;
+  justify-content: flex-start !important;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.bg-blue-app {
+  background-color: #282c34;
+  min-height: 100vh !important;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+}
