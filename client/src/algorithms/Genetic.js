@@ -1,9 +1,9 @@
 import { shuffle, getTwo, getDistance } from '../utils'
 import { sendFile } from '../utils/api'
 
-export const POPULATION_SIZE = 4
+export const POPULATION_SIZE = 100
 export const MUTATION_RATE = 0.02
-export const NUMBER_OF_GENERATIONS = 200000
+export const NUMBER_OF_GENERATIONS = 100
 export const EXPLONENTIAL_RATE = 8
 
 class GeneticAlgorithm {
@@ -60,8 +60,7 @@ class GeneticAlgorithm {
     let totalFitness = 0
     this.population.paths.forEach((path, index) => {
       const distance = this.calculateDistance(path)
-      this.population.fitness[index] =
-        1 / (Math.pow(distance, EXPLONENTIAL_RATE) + 1)
+      this.population.fitness[index] = 1 / Math.pow(distance, EXPLONENTIAL_RATE)
       totalFitness += this.population.fitness[index]
 
       if (distance < currentBestDistance) {
@@ -78,6 +77,10 @@ class GeneticAlgorithm {
     this.population.fitness = this.population.fitness.map(
       fitness => fitness / totalFitness
     )
+
+    // this.population.fitness.map((fit, i) => {
+    //   console.log(this.population.paths[i], fit)
+    // })
   }
 
   // para cara caminho da populacao, escolhe um caminho aleatoriamente
@@ -128,10 +131,10 @@ class GeneticAlgorithm {
 
   findSmallestPath = () => {
     this.populate()
-    for (let i = 0; i < NUMBER_OF_GENERATIONS; i++) {
+    for (let i = 0; i < this.instance.dimension * NUMBER_OF_GENERATIONS; i++) {
+      //console.log('GERAÇÃO', i)
       this.calculateFitness()
       this.nextGeneration()
-      //console.log(((i + 1) / NUMBER_OF_GENERATIONS) * 100)
     }
     this.time.end = new Date()
     const seconds = (this.time.end.getTime() - this.time.start.getTime()) / 1000

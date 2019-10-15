@@ -121,54 +121,6 @@ class FarthestInsertion {
     return path
   }
 
-  // pega uma parte do caminho e inverte
-  flip = (start, end, path) => {
-    return [
-      ...path.slice(0, start),
-      ...path.slice(start, end).reverse(),
-      ...path.slice(end),
-    ]
-  }
-
-  // testa se fazer o flip seria bom para o caminho
-  two_op = path => {
-    const numberOfCities = this.instance.dimension
-    const { format, distances } = this.instance
-    let newPath = path
-    let stop = false
-
-    while (!stop) {
-      stop = true
-      for (let i = 1; i < Math.floor(numberOfCities / 2); i++) {
-        for (let posA = 0; posA < numberOfCities; posA++) {
-          const posB = (posA + i) % numberOfCities
-          const a = path[posA]
-          // vizinho anterior a A
-          const neighborA = path[posA - 1 > 0 ? posA - 1 : numberOfCities - 1]
-          const b = path[posB]
-          // vizinho seguinte a B
-          const neighborB = path[(posB + 1) % numberOfCities]
-          const dist = {
-            nA_b: getDistance(neighborA, b, format, distances),
-            nA_a: getDistance(neighborA, a, format, distances),
-            nB_b: getDistance(neighborB, b, format, distances),
-            nB_a: getDistance(neighborB, a, format, distances),
-          }
-          const distWithFlip = dist.nA_b + dist.nB_a
-          const distWithoutFlip = dist.nA_a + dist.nB_b
-
-          if (distWithFlip < distWithoutFlip) {
-            newPath = this.flip(posA, posB, newPath)
-            stop = false
-          } else {
-            return newPath
-          }
-        }
-      }
-    }
-    return newPath
-  }
-
   findSmallestPath = () => {
     let path, totalDistance
     let min = Infinity
@@ -185,7 +137,6 @@ class FarthestInsertion {
     this.best.distance = min
     this.best.pathEver = bestPath
     this.time.end = new Date()
-    this.improve()
 
     const seconds = (this.time.end.getTime() - this.time.start.getTime()) / 1000
     sendFile({
@@ -195,12 +146,6 @@ class FarthestInsertion {
       cost: min,
       path: bestPath,
     }).then(response => console.log(response))
-  }
-
-  improve = () => {
-    const newPath = this.two_op(this.best.pathEver)
-    const totalSize = calculatePathSize(newPath, this.instance)
-    this.best.two_op = { newPath, totalSize }
   }
 }
 
